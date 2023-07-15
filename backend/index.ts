@@ -6,7 +6,7 @@ import {
   PayloadToClient,
   Point,
 } from "./backendTypes.ts";
-import { Action } from "./openai/movementPrompts.ts";
+import { Action, getMoveDirectionPrompt } from "./openai/movementPrompts.ts";
 
 const wss = new WebSocketServer({ port: 8080 });
 
@@ -91,11 +91,11 @@ function selectAction(
   const randomDy = Math.floor(Math.random() * (max - min + 1)) + min;
 
   // TODO use LLM to decide
-  // const prompt = getMoveDirectionPrompt(
-  //   BOARD_DIMENSIONS,
-  //   myAgent.position,
-  //   nearbyAgents
-  // );
+  const prompt = getMoveDirectionPrompt(
+    BOARD_DIMENSIONS,
+    myAgent.position,
+    nearbyAgents
+  );
   // console.log(prompt);
   return null;
 }

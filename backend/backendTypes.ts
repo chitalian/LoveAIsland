@@ -1,4 +1,15 @@
-import { Action } from "./openai/movementPrompts.ts";
+export interface Move {
+  direction: "up" | "down" | "left" | "right";
+}
+
+export interface Interact {
+  agentId: string;
+}
+
+export interface Action {
+  type: "move" | "interact";
+  payload: Move | Interact;
+}
 
 export type Point = [number, number];
 

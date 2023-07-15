@@ -1,4 +1,4 @@
-import { WebSocketServer } from "ws";
+import { WebSocketServer, WebSocket } from "ws";
 import { v4 as uuid } from "uuid";
 import {
   AgentProfile,
@@ -6,7 +6,7 @@ import {
   PayloadToClient,
   Point,
 } from "./backendTypes.ts";
-import { Action } from "./openai/movementPrompts.ts";
+import { Action, getMoveDirectionPrompt } from "./openai/movementPrompts.ts";
 
 const wss = new WebSocketServer({ port: 8080 });
 
@@ -91,7 +91,12 @@ function selectAction(
   const randomDy = Math.floor(Math.random() * (max - min + 1)) + min;
 
   // TODO use LLM to decide
-  // throw new Error("NOT IMPLEMENTED");
+  const prompt = getMoveDirectionPrompt(
+    BOARD_DIMENSIONS,
+    myAgent.position,
+    nearbyAgents
+  );
+  // console.log(prompt);
   return null;
 }
 
@@ -109,10 +114,7 @@ async function simulateAgent(selfId: string) {
   const nearbyAgents: AgentProfile[] = [];
   const MAX_POI_DISTANCE = 2;
   for (const agentId in agentStates) {
-    if (
-      agentId !== selfId &&
-      nearby(center, agentStates[agentId].position, MAX_POI_DISTANCE)
-    ) {
+    if (nearby(center, agentStates[agentId].position, MAX_POI_DISTANCE)) {
       nearbyAgents.push(agentStates[agentId].profileData);
     }
   }
@@ -155,6 +157,6 @@ for (let turn = 0; turn < 100; turn++) {
     });
 
     //sleep for 1 second
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 5_000));
   }
 }

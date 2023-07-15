@@ -1,18 +1,7 @@
+// @ts-ignore
 import { CallOpenAIProps, OpenAIResponse } from "./index.ts";
-import { AgentProfile } from "../backendTypes.ts";
-
-export interface Move {
-  direction: "up" | "down" | "left" | "right";
-}
-
-export interface Interact {
-  agentId: string;
-}
-
-export interface Action {
-  type: "move" | "interact";
-  payload: Move | Interact;
-}
+// @ts-ignore
+import { Action, AgentProfile } from "../backendTypes.ts";
 
 export function getMoveDirectionPrompt(
   boardDimensions: [number, number],
@@ -24,7 +13,7 @@ export function getMoveDirectionPrompt(
   const [minX, minY] = [0, 0];
   const [maxX, maxY] = [width - 1, height - 1];
 
-  const directions = [];
+  const directions: string[] = [];
   if (x > minX) {
     directions.push("left");
   }

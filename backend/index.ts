@@ -5,8 +5,8 @@ import {
   AgentState,
   PayloadToClient,
   Point,
-} from "./backendTypes";
-import { Action } from "./openai/movementPrompts";
+} from "./backendTypes.ts";
+import { Action } from "./openai/movementPrompts.ts";
 
 const wss = new WebSocketServer({ port: 8080 });
 

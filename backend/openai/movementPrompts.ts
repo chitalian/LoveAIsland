@@ -1,5 +1,5 @@
-import { CallOpenAIProps, OpenAIResponse } from ".";
-import { AgentProfile } from "../backendTypes";
+import { CallOpenAIProps, OpenAIResponse } from "./index.ts";
+import { AgentProfile } from "../backendTypes.ts";
 
 export interface Move {
   direction: "up" | "down" | "left" | "right";

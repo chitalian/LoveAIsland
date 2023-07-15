@@ -1,4 +1,4 @@
-import { Action } from "./openai/movementPrompts";
+import { Action } from "./openai/movementPrompts.ts";
 
 export type Point = [number, number];
 

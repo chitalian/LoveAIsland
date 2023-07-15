@@ -154,3 +154,5 @@ for (let turn = 0; turn < 100; turn++) {
     broadcast(JSON.stringify(agentStates));
   }
 }
+
+console.log("Listening on ws://" + "localhost" + ":8080");

@@ -2,15 +2,12 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { AgentState } from "../../backend/backendTypes";
+import { AgentState, PayloadToClient } from "../../backend/backendTypes";
 
-type PayloadFromServer = {
-  [key: string]: AgentState;
-};
 export const useWebsocket = (url: string | null) => {
   const [response, setResponse] = useState({});
   const [callBacks, setCallBacks] = useState<
-    ((message: PayloadFromServer) => void)[]
+    ((message: PayloadToClient) => void)[]
   >([
     (message) => {
       setResponse(message);
@@ -51,7 +48,7 @@ export const useWebsocket = (url: string | null) => {
     retry: false,
   });
 
-  const subscribe = (callBack: (message: PayloadFromServer) => void) => {
+  const subscribe = (callBack: (message: PayloadToClient) => void) => {
     const newCallbacks = [...callBacks, callBack];
     setCallBacks((callBacks) => [...callBacks, callBack]);
     if (webhook.data?.socket) {

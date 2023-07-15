@@ -11,7 +11,7 @@ export function IslandBody() {
   const [message, setMessage] = useState("");
   return (
     <div className="">
-      {response}
+      {JSON.stringify(response)}
       <textarea
         className="z-30 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex text-black"
         onChange={(e) => {

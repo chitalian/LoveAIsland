@@ -1,6 +1,11 @@
 import { WebSocketServer } from "ws";
 import { v4 as uuid } from "uuid";
-import { AgentProfile, AgentState, Point } from "./backendTypes";
+import {
+  AgentProfile,
+  AgentState,
+  PayloadToClient,
+  Point,
+} from "./backendTypes";
 import { Action } from "./openai/movementPrompts";
 
 const wss = new WebSocketServer({ port: 8080 });
@@ -17,10 +22,10 @@ wss.on("connection", function connection(ws) {
   ws.send("something");
 });
 
-function broadcast(data: any) {
+function broadcast(data: PayloadToClient) {
   wss.clients.forEach(function each(client) {
     if (client.readyState === WebSocket.OPEN) {
-      client.send(data);
+      client.send(JSON.stringify(data));
     }
   });
 }
@@ -143,7 +148,11 @@ for (let turn = 0; turn < 100; turn++) {
     console.log("running loop");
     await simulateAgent(agentId);
 
-    broadcast(JSON.stringify(agentStates));
+    broadcast({
+      //TODO
+      interactionHistory: [],
+      agentStates: agentStates,
+    });
 
     //sleep for 1 second
     await new Promise((resolve) => setTimeout(resolve, 1000));

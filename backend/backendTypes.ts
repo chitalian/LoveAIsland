@@ -25,6 +25,8 @@ export interface AgentState {
 }
 
 export interface PayloadToClient {
-  agentStates: AgentState[];
+  agentStates: {
+    [key: string]: AgentState;
+  };
   interactionHistory: Interaction[];
 }

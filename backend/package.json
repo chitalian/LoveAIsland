@@ -3,14 +3,18 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Anton Lazarev <antonok.com>",
   "license": "MIT",
   "dependencies": {
+    "typescript": "^5.1.6",
     "uuid": "^9.0.0",
+    "uuidv4": "^6.2.13",
     "ws": "^8.13.0"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.5.5"
   }
 }

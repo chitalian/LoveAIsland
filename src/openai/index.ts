@@ -14,19 +14,44 @@ interface Function {
   };
 }
 
+interface Message {
+  role: "system" | "user";
+  content: string;
+}
+
 interface OpenAIRequest {
+  model: string;
+  messages: Message[];
+  function: Function;
+}
+interface CallOpenAIProps {
   system: string;
   user: string;
   functions: Function[];
 }
 
-async function callOpenAI(prompt: string) {
+function buildBody(props: CallOpenAIProps): string {
+  return JSON.stringify({
+    model: "gpt-3.5-turbo-0613",
+    messages: [
+      { role: "system", content: props.system },
+      { role: "user", content: props.user },
+    ],
+    functions: props.functions.map((f) => ({
+      ...f,
+      fnName: undefined,
+      name: f.fnName,
+    })),
+  });
+}
+
+async function callOpenAI(props: CallOpenAIProps) {
   fetch("https://oai.hconeai.com/v1/chat/completions", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + process.env.OPENAI_API_KEY,
     },
-    body: JSON.stringify({}),
+    body: buildBody(props),
   });
 }

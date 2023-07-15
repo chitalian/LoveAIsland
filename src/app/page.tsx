@@ -3,6 +3,7 @@
 import { IslandBody } from "@/components/IslandBody";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+
 export default function Home() {
   const queryClient = new QueryClient();
 

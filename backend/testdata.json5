@@ -1,0 +1,142 @@
+[
+  {
+    // completely fake data
+    name: "Foo Jackson",
+    age: 23,
+    pronouns: "he/him/his",
+    orientation: "pansexual",
+    photos: [
+      "He is shirtless on the beach, wearing sunglasses, and holding two thumbs up, standing next to a surfboard",
+      "He is posing with 6 friends, all wearing formal wear and holding beer cans",
+      "He is standing with his arms crossed next to an expensive sports car",
+      "He is relaxing in a red lawn chair holding a glass of beer",
+      "He is holding a large fish on a dock",
+    ],
+    prompts: [
+      ["I'll fall for you if", "you trip me"],
+      ["Do you agree or disagree that", "pineapple belongs on pizza?"],
+      ["I'm known for", "my knowledge of obscure Michigan facts"],
+    ],
+  },
+  {
+      // based on https://www.reddit.com/r/hingeapp/comments/14zw3bz/30f_profile_any_advice_welcome/
+      name: "Clebentine Keek",
+      age: 30,
+      pronouns: "she/her/hers",
+      orientation: "straight",
+      photos: [
+          "She is taking a selfie in front of a wall, completely covered in large photorealistic paintings",
+          "She is taking a selfie with her best friend indoors",
+          "She is holding a large photorealistic painting of a cat sitting in a cat bed",
+          "She is standing in front of a barbecue grill in a small patio",
+          "She is posing with her entire face painted to look like a skull",
+          "She is sitting at a restaurant table with 2 of her friends",
+      ],
+      prompts: [
+          ["Choose our first date", "Junkyard golf, Thai food & boba, or Drinks on a rooftop bar"],
+          ["The way to win me over is", "Love your horror movies/TV shows. but if you get scared easily I'll hold your hand"],
+          ["The key to my heart is", "Shared appreciation, and a man who isn't afraid to show his feelings. Having a cat also helps!"],
+          ["Best travel story", "Three days in Madrid filled with mint mojitos, boat rides in Retiro Park, art gallery hopping and a tour of Bernabeu stadium (Real Madrid!)"],
+      ],
+  },
+  {
+      // based on https://www.reddit.com/r/hingeapp/comments/14r00b4/28m_profile_review_3_matches_in_2_years_seattle/
+      name: "Newt Biesix",
+      age: 28,
+      pronouns: "he/him/his",
+      orientation: "straight",
+      photos: [
+          "He is smiling and taking a selfie with 2 friends in front of a waterfall",
+          "He is standing in front of a scenic landscape with a lake and a mountain",
+          "He is smiling in a selfie with 3 other friends in front of someone's house",
+          "He is standing in a group with 4 other friends; they are all holding racing helmets",
+          "He is drawing a sparkling man in a suit using black and green dry erase markers on a whiteboard",
+          "He is taking a selfie sitting in an office chair",
+      ],
+      prompts: [
+          ["My simple pleasures", "Going for a stroll outside / in the park"],
+          ["Fact about me that surprises people", "I'm an amateur artist - look me up on Instagram"],
+          ["I geek out on", "Avatar the last airbender, naruto, megalo box, psycho pass, the man in the high castle"],
+      ],
+  },
+  {
+      // based on https://www.reddit.com/r/hingeapp/comments/14ztl5c/request_for_profile_review_28m_i_just_remade/
+      name: "Jong Limpun",
+      age: 28,
+      pronouns: "he/him/his",
+      orientation: "straight",
+      photos: [
+          "He is riding on a horse outside",
+          "A close, zoomed in photo of his face",
+          "He is shirtless and carrying a kayak outdoors",
+          "He is posing in front of some framed certificates with 2 others, all wearing suits",
+          "He is wearing a helmet and harness, likely for some kind of dangerous outdoor activity",
+          "A pencil drawing of a man's face that he drew",
+      ],
+      prompts: [
+          ["Choose our first date", "Rob my bank branch in retaliation for their ridiculous checking fees, Tattoo each other's names on our foreheads, or Egg our least favorite person's house (my surgical Chief comes to mind)"],
+          ["The way to win me over is", "Be a passenger on my motorcycle and throw banana peels at vehicles trying to overtake us and shells at vehicles we're trying to pass (I actually have a motorcycle, not just talking about Mario Kart but that too)"],
+          ["A life goal of mine", "Is to retire and build a sanctuary for wildlife and other unfortunate/unwanted animals. We're meant to coexist with other beings on this planet and we have been too unkind to them. That or open a biker bar"],
+          ["Dating me is like", "\"I'll handle it\""],
+      ],
+  },
+  {
+      // based on https://www.reddit.com/r/hingeapp/comments/14mzbcs/32_m_profile_review_any_help_is_appreciated_thank/
+      name: "Aldo Terrence",
+      age: 32,
+      pronouns: "he/him/his",
+      orientation: "straight",
+      photos: [
+          "He is holding a tray of four tasting-sized wine glasses with labels",
+          "He is wearing a suit as the best man at a friend's wedding",
+          "He is smiling with his eyes closed inside a golden frame wrapped with string-lights",
+          "He is standing in front of a boat in a pool with bright turquoise water and palm trees in the background",
+          "He is leading a horse in a sandy area",
+          "He is pointing at a poster for an Adele concert he went to",
+      ],
+      prompts: [
+          ["The best spot in town for pizza is", "Tony roni, Pizza Jawn, or The couch tomato Cafe & Bistro"],
+          ["A random fact I love is", "The giant squid's brain is a torus shape, and its esophagus runs through it. If the squid eats anything too big, it will suffer massive brain damage. (Evolution at its finest...)"],
+          ["To me, relaxation is", "Listening to music, listening to podcasts - sports, current events, science, and mental health are my go-tos, and taking my bicycle out for a ride"],
+          ["What I order for the table", "How many people are we talking? Probably a shot of water cause anything else would be too expensive"],
+      ],
+  },
+  {
+      // based on https://www.reddit.com/r/hingeapp/comments/14j6bk4/35f_profile_review_please/
+      name: "Sesta Sau",
+      age: 35,
+      pronouns: "she/her/hers",
+      orientation: "straight",
+      photos: [
+          "She is taking a close up selfie in fron tof a white wall",
+          "She is sitting in front of a beach with a long coastline",
+          "She is taking a selfie outside",
+          "She is standing with her family in front of a large lake with a gazebo",
+          "She is sitting with a friend in a desert with bright white sand at sunset",
+      ],
+      prompts: [
+          ["My simple pleasures", "Getting lost in a good book while listening to movie scores, cozy autumn weather, enjoying the sound of rainfall while curled up beneath warm blankets"],
+          ["I want someone who", "Is patient, compassionate, and has a passion for learning and growing as a person; someone who would enjoy having meaningful conversations, but also be excited to explore the area or watch a movie in theaters!"],
+          ["I geek out on", "New scientific discoveries, particularly in neuroscience or medicine. Also, bookstores and libraries!"],
+      ],
+  },
+  {
+      // based on https://www.reddit.com/r/hingeapp/comments/14j6bk4/35f_profile_review_please/
+      name: "Sesta Sau",
+      age: 35,
+      pronouns: "she/her/hers",
+      orientation: "straight",
+      photos: [
+          "She is taking a close up selfie in fron tof a white wall",
+          "She is sitting in front of a beach with a long coastline",
+          "She is taking a selfie outside",
+          "She is standing with her family in front of a large lake with a gazebo",
+          "She is sitting with a friend in a desert with bright white sand at sunset",
+      ],
+      prompts: [
+          ["My simple pleasures", "Getting lost in a good book while listening to movie scores, cozy autumn weather, enjoying the sound of rainfall while curled up beneath warm blankets"],
+          ["I want someone who", "Is patient, compassionate, and has a passion for learning and growing as a person; someone who would enjoy having meaningful conversations, but also be excited to explore the area or watch a movie in theaters!"],
+          ["I geek out on", "New scientific discoveries, particularly in neuroscience or medicine. Also, bookstores and libraries!"],
+      ],
+  },
+]

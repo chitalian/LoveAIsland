@@ -24,7 +24,13 @@ interface OpenAIRequest {
   messages: Message[];
   function: Function;
 }
-interface CallOpenAIProps {
+export interface CallOpenAIProps {
+  system: string;
+  user: string;
+  functions: Function[];
+}
+
+export interface OpenAIResponse {
   system: string;
   user: string;
   functions: Function[];
@@ -45,7 +51,7 @@ function buildBody(props: CallOpenAIProps): string {
   });
 }
 
-async function callOpenAI(props: CallOpenAIProps) {
+export async function callOpenAI(props: CallOpenAIProps) {
   fetch("https://oai.hconeai.com/v1/chat/completions", {
     method: "POST",
     headers: {

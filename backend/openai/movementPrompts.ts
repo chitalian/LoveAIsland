@@ -31,16 +31,19 @@ export function getMoveDirectionPrompt(
 
   return {
     system: `
+You are a simulated agent in a dating world. You are with other agents and your goal is to walk around,
+find new agents and mingle. You want to eventually find your match. You have a 50/50 change of moving or interacting with an agent.
+Each agent is unique and you can learn about them.
 You are standing at ${x}, ${y} on a ${width} by ${height} board.
 You see ${
       nearbyAgents.length
-    } other agents nearby. You can move in any direction or talk to any other . Where do you move?
+    } other agents nearby. You can move in any direction or talk to any other.
 Here are all the Agents near you and their name:
 ${nearbyAgents.map((a) => `${a.name}: ${a.id}`).join("\n")}
 `,
     // TODO add a list of their previous actions
     user: `
-
+Choose one of the functions available to you.
     `,
     functions: [
       {

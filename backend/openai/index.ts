@@ -31,9 +31,7 @@ export interface CallOpenAIProps {
 }
 
 export interface OpenAIResponse {
-  system: string;
-  user: string;
-  functions: Function[];
+  //TODO
 }
 
 function buildBody(props: CallOpenAIProps): string {
@@ -52,11 +50,12 @@ function buildBody(props: CallOpenAIProps): string {
 }
 
 export async function callOpenAI(props: CallOpenAIProps) {
-  fetch("https://oai.hconeai.com/v1/chat/completions", {
+  return fetch("https://oai.hconeai.com/v1/chat/completions", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + process.env.OPENAI_API_KEY,
+      Authorization: "Bearer " + Deno.env.get("OPENAI_API_KEY"),
+      "Helicone-Auth": "Bearer " + Deno.env.get("HELICONE_API_KEY"),
     },
     body: buildBody(props),
   });

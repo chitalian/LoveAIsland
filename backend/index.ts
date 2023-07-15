@@ -7,6 +7,8 @@ import {
   Point,
 } from "./backendTypes.ts";
 import { Action, getMoveDirectionPrompt } from "./openai/movementPrompts.ts";
+import { callOpenAI } from "./openai/index.ts";
+const BOARD_DIMENSIONS: [number, number] = [11, 11];
 
 const wss = new WebSocketServer({ port: 8080 });
 
@@ -81,10 +83,10 @@ function nearby(p1: Point, p2: Point, range: number) {
   return Math.abs(p2[0] - p1[0]) <= range && Math.abs(p2[1] - p1[1]) <= range;
 }
 
-function selectAction(
+async function selectAction(
   myAgent: AgentState,
   nearbyAgents: AgentProfile[]
-): Action | null {
+): Promise<Action | null> {
   const min = -1;
   const max = 1;
   const randomDx = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -96,7 +98,8 @@ function selectAction(
     myAgent.position,
     nearbyAgents
   );
-  // console.log(prompt);
+  const ret = await callOpenAI(prompt);
+  console.log(prompt, "ret:", await ret.text());
   return null;
 }
 
@@ -120,11 +123,11 @@ async function simulateAgent(selfId: string) {
   }
 
   // select movement
-  const newPosition = selectAction(agentState, nearbyAgents);
+  const newPosition = await selectAction(agentState, nearbyAgents);
 
   // identify nearby interactivity options
   center = agentState.position;
-  const interactiveOptions = [];
+  const interactiveOptions: string[] = [];
   const MAX_INTERACT_DISTANCE = 1;
   for (const agentId in agentStates) {
     if (
@@ -147,7 +150,9 @@ console.log("Listening on ws://" + "localhost" + ":8080");
 // Begin simulation
 for (let turn = 0; turn < 100; turn++) {
   for (let agentId in agentStates) {
+    await new Promise((resolve) => setTimeout(resolve, 1_000));
     console.log("running loop");
+
     await simulateAgent(agentId);
 
     broadcast({
@@ -157,6 +162,5 @@ for (let turn = 0; turn < 100; turn++) {
     });
 
     //sleep for 1 second
-    await new Promise((resolve) => setTimeout(resolve, 5_000));
   }
 }

@@ -44,6 +44,7 @@ ${nearbyAgents.map((a) => `${a.name}: ${a.id}`).join("\n")}
     // TODO add a list of their previous actions
     user: `
 Choose one of the functions available to you.
+Dont forget to be friendly to the other agents!
     `,
     functions: [
       {

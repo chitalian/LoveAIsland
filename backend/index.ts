@@ -1,5 +1,7 @@
+import { readFileSync } from 'node:fs';
 import { WebSocketServer, WebSocket } from "ws";
 import { v4 as uuid } from "uuid";
+import JSON5 from "json5";
 import {
   AgentProfile,
   AgentState,
@@ -48,36 +50,20 @@ function randomPosition(): Point {
   return [x, y];
 }
 
-function createNewAgent() {
-  const agent: AgentState = {
-    position: randomPosition(),
-    // TODO - generate and/or source from somewhere
-    profileData: {
-      name: "Foo Jackson",
-      pronouns: "he/him/his",
-      orientation: "pansexual",
-      photos: [
-        "A photo of Foo on the beach. He is shirtless, wearing sunglasses, and holding two thumbs up, standing next to a surfboard.",
-        "A photo of Foo, along with 6 friends, all wearing formal wear and holding beer cans.",
-        "A photo of Foo standing with his arms crossed next to an expensive sports car.",
-        "A photo of Foo relaxing in a red lawn chair holding a glass of beer.",
-        "A photo of Foo holding a large fish on a dock.",
-      ],
-      prompts: [
-        ["I'll fall for you if", "you trip me"],
-        ["Do you agree or disagree that", "pineapple belongs on pizza?"],
-        ["I'm known for", "my knowledge of obscure Michigan facts"],
-      ],
-      id: uuid(),
-    },
-  };
-
-  agentStates[agent.profileData.id] = agent;
+function loadDemoAgents() {
+  const fileData = readFileSync('./testdata.json5', "utf8");
+  const agents: AgentProfile[] = JSON5.parse(fileData);
+  for (const agent of agents) {
+    agent.id = uuid();
+    const agentState: AgentState = {
+      position: randomPosition(),
+      profileData: agent,
+    };
+    agentStates[agent.id] = agentState;
+  }
 }
 
-for (let i = 0; i < 20; i++) {
-  createNewAgent();
-}
+loadDemoAgents()
 
 function nearby(p1: Point, p2: Point, range: number) {
   return Math.abs(p2[0] - p1[0]) <= range && Math.abs(p2[1] - p1[1]) <= range;

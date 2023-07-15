@@ -15,6 +15,7 @@ export type Point = [number, number];
 
 export interface AgentProfile {
   name: string;
+  age: Number;
   pronouns: string;
   orientation: string;
   photos: string[];

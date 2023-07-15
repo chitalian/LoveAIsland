@@ -11,6 +11,7 @@
   "author": "Anton Lazarev <antonok.com>",
   "license": "MIT",
   "dependencies": {
+    "json5": "^2.2.3",
     "typescript": "^5.1.6",
     "uuid": "^9.0.0",
     "uuidv4": "^6.2.13",

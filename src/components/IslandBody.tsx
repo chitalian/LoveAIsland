@@ -10,7 +10,7 @@ const IslandMap:any = dynamic(() => import('../components/IslandMap'), {
 });
 
 export function IslandBody() {
-  const { response, sendMessage, subscribe } = useWebsocket(
+  const { sendMessage, subscribe } = useWebsocket(
     "ws://localhost:8080"
   );
   const [message, setMessage] = useState("");
@@ -25,9 +25,10 @@ export function IslandBody() {
         }}
         value={message}
       ></textarea>
+
       <div className="pt-10 min-h-[600px] bg-gray-100 flex justify-center">
         <div id="hexagon-board-parent" className="min-w-[800px] min-h-[400px] max-w-[90vw] bg-white border border-gray-300 rounded-lg  overflow-hidden relative">
-          <IslandMap god={true} />
+          <IslandMap god={true} subscribe={subscribe}/>
         </div>
       </div>
     </div>

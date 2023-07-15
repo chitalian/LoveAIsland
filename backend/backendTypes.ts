@@ -1,15 +1,18 @@
 export interface Move {
+  _typename: "Move";
   direction: "up" | "down" | "left" | "right";
 }
 
+export interface Message {
+  text: string;
+}
 export interface Interact {
-  agentId: string;
+  _typename: "Interact";
+  destionationAgentId: string;
+  message: Message;
 }
 
-export interface Action {
-  type: "move" | "interact";
-  payload: Move | Interact;
-}
+export type Action = Move | Interact;
 
 export type Point = [number, number];
 
@@ -27,7 +30,8 @@ export interface AgentAction {
   action: Action;
 }
 export interface Interaction {
-  actions: AgentAction[];
+  agentId: string;
+  action: AgentAction;
 }
 
 export interface AgentState {

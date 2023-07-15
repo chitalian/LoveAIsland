@@ -5,14 +5,12 @@ import { useState } from "react";
 import { AgentState, PayloadToClient } from "../../backend/backendTypes";
 
 export const useWebsocket = (url: string | null) => {
-  const [response, setResponse] = useState({});
+  // const [response, setResponse] = useState({});
   const [callBacks, setCallBacks] = useState<
     ((message: PayloadToClient) => void)[]
   >([
-    (message) => {
-      setResponse(message);
-    },
   ]);
+
   const webhook = useQuery({
     queryKey: ["webhook", url],
     queryFn: async () => {
@@ -69,5 +67,5 @@ export const useWebsocket = (url: string | null) => {
     }
   };
 
-  return { sendMessage, response, subscribe };
+  return { sendMessage, subscribe };
 };

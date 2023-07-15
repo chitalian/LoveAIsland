@@ -5,6 +5,7 @@ import {
     Point,
     Rectangle
 } from "pixi.js";
+import { PayloadToClient } from '../../backend/backendTypes';
 
 export interface Tile {
     x: number;
@@ -49,11 +50,12 @@ const drawSquare = (graphics: any, tile: Tile, tileSize: number, isSelected: boo
 
 interface BoardProps {
     god: boolean;
+    subscribe: (callBack: (message: PayloadToClient) => void) => void;
     tiles: any;
     objectMap: number[][]
 }
 
-const IslandMap: React.FC<BoardProps> = ({ god }) => {
+const IslandMap: React.FC<BoardProps> = ({ god, subscribe}) => {
     const [parentDimensions, setParentDimensions] = useState({ width: 0, height: 0 });
     const [selectedTile, setSelectedTile] = useState<Tile | null>(null);
     const [board, setBoard] = useState<Tile[] | null >( null );
@@ -61,40 +63,50 @@ const IslandMap: React.FC<BoardProps> = ({ god }) => {
     const [loading, setLoading] = useState(false);
     const maskRef = useRef(null);
 
-    useEffect (() => {
+    
+    function onUpdate(gameState: PayloadToClient) {
+      console.log("yes!")
+      //gameState.interactionHistory[0].actions
 
-        if (!board) {
-        setLoading(true);
-        // Now generate a 10x10 board
-        const board = generateBoard(11);
-        console.log("this is board:");
-        console.log(board);
-        // add isSelected and isHover fields to each tile
-        const tiles = board.map((tile: any) => {
-          return {
-            ...tile,
-            isSelected: false,
-          };
-        });
-
-        console.log(tiles);
-        setBoard(tiles);
-        setLoading(false);
-        setObjectMap([
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        ])
-        setLoading(false);
+      //Object.keys(gameState.agentStates)
     }
+    
+
+    useEffect(() => {
+      subscribe(onUpdate);
+    }, []);
+
+    useEffect (() => {
+      
+        if (!board) {
+          setLoading(true);
+          // Now generate a 10x10 board
+          const board = generateBoard(11);
+          // add isSelected and isHover fields to each tile
+          const tiles = board.map((tile: any) => {
+            return {
+              ...tile,
+              isSelected: false,
+            };
+          });
+
+          setBoard(tiles);
+          setLoading(false);
+          setObjectMap([
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          ])
+          setLoading(false);
+      }
     }, [])
   
     useEffect(() => {

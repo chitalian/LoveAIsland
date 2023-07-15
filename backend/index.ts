@@ -1,5 +1,6 @@
 import { WebSocketServer } from "ws";
 import { v4 as uuid } from "uuid";
+import { AgentState, Point } from "./backendTypes";
 
 const wss = new WebSocketServer({ port: 8080 });
 
@@ -21,18 +22,6 @@ function broadcast(data: any) {
       client.send(data);
     }
   });
-}
-type Point = [number, number];
-interface AgentState {
-  position: Point;
-  profileData: {
-    name: string;
-    pronouns: string;
-    orientation: string;
-    photos: string[];
-    prompts: [string, string][];
-  };
-  interactionHistory: any[];
 }
 
 // UUID : AgentState

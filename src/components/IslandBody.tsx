@@ -59,10 +59,10 @@ export function IslandBody() {
   const { sendMessage, message } = useWebsocket("ws://localhost:8080");
   return (
     <div className="flex flex-row my-3">
-      <div className="pt-10 min-h-[600px] bg-gray-100 flex justify-center">
+      <div className="min-h-[600px] bg-gray-100 flex justify-center">
         <div
           id="hexagon-board-parent"
-          className="min-w-[800px] min-h-[400px] max-w-[90vw] bg-white border border-gray-300 rounded-lg  overflow-hidden relative"
+          className="min-w-[800px] min-h-[400px] max-w-[90vw] bg-white border border-gray-300 rounded-lg  overflow-hidden relative aspect-square"
         >
           <IslandMap god={true} gameState={message} />
         </div>

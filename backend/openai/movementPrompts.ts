@@ -130,7 +130,7 @@ export function getAction(response: OpenAIResponse):
   | {
       error: string;
     } {
-  const fnCall = response.choices[0]?.message?.function_call;
+  const fnCall = response?.choices?.[0]?.message?.function_call;
   if (fnCall?.name === "move") {
     return {
       _typename: "Move",

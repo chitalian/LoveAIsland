@@ -81,7 +81,7 @@ async function selectAction(
 ): Promise<Action | null> {
   const prompt = getMoveDirectionPrompt(
     BOARD_DIMENSIONS,
-    myAgent.position,
+    myAgent,
     nearbyAgents,
     history.filter((i) => i.agentId === myAgent.profileData.id),
     history.filter(
@@ -91,11 +91,20 @@ async function selectAction(
     )
   );
   const response = await callOpenAI(prompt);
+
   const action = getAction(response);
   if ("error" in action) {
     console.error(action.error);
     return null;
   }
+  console.log("prompt", prompt.system, "\n", prompt.user);
+  console.log(
+    "response",
+    response.choices[0].message.function_call.name,
+    "\n",
+    response.choices[0].message.function_call.arguments
+  );
+
   return action;
 }
 

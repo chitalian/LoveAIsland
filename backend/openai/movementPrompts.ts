@@ -1,15 +1,21 @@
 // @ts-ignore
 import { CallOpenAIProps, OpenAIResponse } from "./index.ts";
 // @ts-ignore
-import { Action, AgentProfile, Interaction } from "../backendTypes.ts";
+import {
+  Action,
+  AgentProfile,
+  AgentState,
+  Interaction,
+} from "../backendTypes.ts";
 
 export function getMoveDirectionPrompt(
   boardDimensions: [number, number],
-  agentPosition: [number, number],
+  me: AgentState,
   nearbyAgents: AgentProfile[],
   previousInteractions: Interaction[],
   interactionsTowardsMe: Interaction[]
 ): CallOpenAIProps {
+  const agentPosition = me.position;
   const [width, height] = boardDimensions;
   const [x, y] = agentPosition;
   const [minX, minY] = [0, 0];
@@ -71,6 +77,11 @@ ${interactionsTowardsMe
 `,
     // TODO add a list of their previous actions
     user: `
+Here is your agent's description:
+${me.profileData.name} is a ${me.profileData.age} year old ${
+      me.profileData.orientation
+    } ${me.profileData.pronouns}.
+${me.profileData.prompts.map((p) => p[0] + ": " + p[1]).join("\n")}
 Choose one of the functions available to you.
 Dont forget to be friendly to the other agents!
     `,

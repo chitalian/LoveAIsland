@@ -68,7 +68,15 @@ const IslandMap: React.FC<BoardProps> = ({ god, subscribe}) => {
       console.log("yes!")
       //gameState.interactionHistory[0].actions
 
-      //Object.keys(gameState.agentStates)
+      const occupancy = Object.values(gameState.agentStates).map((agentState) => {
+        const x = agentState.position[0];
+        const y = agentState.position[1];
+        const data = agentState.profileData;
+
+
+        
+
+      })
     }
     
 
@@ -131,7 +139,7 @@ const IslandMap: React.FC<BoardProps> = ({ god, subscribe}) => {
     return (
         (board && objectMap) ? 
             <Stage
-                options={{ antialias: true, backgroundColor: 0xffffff }}
+                options={{ antialias: true, backgroundColor: 0xfcfaf8 }}
                 width={parentDimensions.width}
                 height={parentDimensions.height}
             >

@@ -3,17 +3,14 @@ import { WebSocketServer, WebSocket } from "ws";
 import { v4 as uuid } from "uuid";
 import JSON5 from "json5";
 import {
+  Action,
   AgentProfile,
   AgentState,
   Interaction,
   PayloadToClient,
   Point,
 } from "./backendTypes.ts";
-import {
-  Action,
-  getAction,
-  getMoveDirectionPrompt,
-} from "./openai/movementPrompts.ts";
+import { getAction, getMoveDirectionPrompt } from "./openai/movementPrompts.ts";
 import { callOpenAI } from "./openai/index.ts";
 const BOARD_DIMENSIONS: [number, number] = [11, 11];
 
@@ -178,6 +175,12 @@ for (let turn = 0; turn < 100; turn++) {
       interactionHistory: interactionHistory,
       agentStates: agentStates,
     });
+    console.log(
+      "MAP",
+      (Object.values(agentStates) as AgentState[]).map(
+        (a: AgentState) => a.position
+      )
+    );
 
     //sleep for 1 second
   }

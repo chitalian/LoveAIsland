@@ -1,14 +1,19 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync } from "node:fs";
 import { WebSocketServer, WebSocket } from "ws";
 import { v4 as uuid } from "uuid";
 import JSON5 from "json5";
 import {
   AgentProfile,
   AgentState,
+  Interaction,
   PayloadToClient,
   Point,
 } from "./backendTypes.ts";
-import { Action, getMoveDirectionPrompt } from "./openai/movementPrompts.ts";
+import {
+  Action,
+  getAction,
+  getMoveDirectionPrompt,
+} from "./openai/movementPrompts.ts";
 import { callOpenAI } from "./openai/index.ts";
 const BOARD_DIMENSIONS: [number, number] = [11, 11];
 
@@ -51,7 +56,7 @@ function randomPosition(): Point {
 }
 
 function loadDemoAgents() {
-  const fileData = readFileSync('./testdata.json5', "utf8");
+  const fileData = readFileSync("./testdata.json5", "utf8");
   const agents: AgentProfile[] = JSON5.parse(fileData);
   for (const agent of agents) {
     agent.id = uuid();
@@ -63,7 +68,7 @@ function loadDemoAgents() {
   }
 }
 
-loadDemoAgents()
+loadDemoAgents();
 
 function nearby(p1: Point, p2: Point, range: number) {
   return Math.abs(p2[0] - p1[0]) <= range && Math.abs(p2[1] - p1[1]) <= range;
@@ -71,79 +76,108 @@ function nearby(p1: Point, p2: Point, range: number) {
 
 async function selectAction(
   myAgent: AgentState,
-  nearbyAgents: AgentProfile[]
+  nearbyAgents: AgentProfile[],
+  history: Interaction[]
 ): Promise<Action | null> {
-  const min = -1;
-  const max = 1;
-  const randomDx = Math.floor(Math.random() * (max - min + 1)) + min;
-  const randomDy = Math.floor(Math.random() * (max - min + 1)) + min;
-
-  // TODO use LLM to decide
   const prompt = getMoveDirectionPrompt(
     BOARD_DIMENSIONS,
-    myAgent.position,
-    nearbyAgents
+    myAgent,
+    nearbyAgents,
+    history.filter((i) => i.agentId === myAgent.profileData.id),
+    history.filter(
+      (i) =>
+        i.action.action._typename === "Interact" &&
+        i.action.action.destionationAgentId === myAgent.profileData.id
+    )
   );
-  const ret = await callOpenAI(prompt);
-  console.log(prompt, "ret:", await ret.text());
-  return null;
+  const response = await callOpenAI(prompt);
+
+  const action = getAction(response);
+  if ("error" in action) {
+    console.error(action.error);
+    return null;
+  }
+  console.log("prompt", prompt.system, "\n", prompt.user);
+  console.log(
+    "response",
+    response.choices[0].message.function_call.name,
+    "\n",
+    response.choices[0].message.function_call.arguments
+  );
+
+  return action;
 }
 
-// can return undefined for "no interaction"
-function selectInteraction(agentState: AgentState, interactOptions: string[]) {
-  return undefined;
+function simulateInteraction(agentState: AgentState, action: Action) {
+  if (action._typename === "Move") {
+    if (action.direction === "up") {
+      agentState.position[1] += 1;
+    } else if (action.direction === "down") {
+      agentState.position[1] -= 1;
+    } else if (action.direction === "left") {
+      agentState.position[0] -= 1;
+    } else if (action.direction === "right") {
+      agentState.position[0] += 1;
+    }
+  }
 }
 
-function simulateInteraction(agentState: AgentState, interaction: string[]) {}
-
-async function simulateAgent(selfId: string) {
+async function simulateAgent(
+  selfId: string,
+  history: Interaction[]
+): Promise<Interaction | null> {
   const agentState = agentStates[selfId];
   // identify nearby points of interest
   let center = agentState.position;
   const nearbyAgents: AgentProfile[] = [];
-  const MAX_POI_DISTANCE = 2;
-  for (const agentId in agentStates) {
-    if (nearby(center, agentStates[agentId].position, MAX_POI_DISTANCE)) {
-      nearbyAgents.push(agentStates[agentId].profileData);
-    }
-  }
-
-  // select movement
-  const newPosition = await selectAction(agentState, nearbyAgents);
-
-  // identify nearby interactivity options
-  center = agentState.position;
-  const interactiveOptions: string[] = [];
   const MAX_INTERACT_DISTANCE = 1;
   for (const agentId in agentStates) {
     if (
       agentId !== selfId &&
       nearby(center, agentStates[agentId].position, MAX_INTERACT_DISTANCE)
     ) {
-      interactiveOptions.push(agentId);
+      nearbyAgents.push(agentStates[agentId].profileData);
     }
   }
 
-  // select interaction
-  const interaction = selectInteraction(agentState, interactiveOptions);
-
-  // simulate interaction
-  if (interaction !== undefined) {
-    simulateInteraction(agentState, interaction);
+  // select movement
+  const action: Action | null = await selectAction(
+    agentState,
+    nearbyAgents,
+    history
+  );
+  if (action === null) {
+    return null;
   }
+
+  simulateInteraction(agentState, action);
+
+  return {
+    action: {
+      action: action,
+      agentId: selfId,
+    },
+    agentId: selfId,
+  };
 }
 console.log("Listening on ws://" + "localhost" + ":8080");
 // Begin simulation
+const interactionHistory: Interaction[] = [];
 for (let turn = 0; turn < 100; turn++) {
   for (let agentId in agentStates) {
     await new Promise((resolve) => setTimeout(resolve, 1_000));
     console.log("running loop");
 
-    await simulateAgent(agentId);
+    const interaction = await simulateAgent(agentId, interactionHistory);
+    if (interaction) {
+      interactionHistory.push(interaction);
+    } else {
+      console.error("no interaction");
+    }
 
     broadcast({
       //TODO
-      interactionHistory: [],
+      interactionHistory: interactionHistory,
       agentStates: agentStates,
     });
 

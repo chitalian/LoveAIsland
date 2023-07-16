@@ -166,7 +166,7 @@ console.log("Listening on ws://" + "localhost" + ":8080");
 const interactionHistory: Interaction[] = [];
 for (let turn = 0; turn < 100; turn++) {
   for (let agentId in agentStates) {
-    await new Promise((resolve) => setTimeout(resolve, 1_000));
+    await new Promise((resolve) => setTimeout(resolve, 1));
     console.log("running loop");
 
     const interaction = await simulateAgent(agentId, interactionHistory);

@@ -42,7 +42,7 @@ const agentStates: {
   [key: string]: AgentState;
 } = {};
 
-const MAX_COORDINATE = 16;
+const MAX_COORDINATE = 11;
 
 // TODO
 function randomPosition(): Point {

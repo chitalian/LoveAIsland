@@ -44,7 +44,7 @@ const MAX_COORDINATE = 11;
 // TODO
 function randomPosition(): Point {
   const min = 0;
-  const max = MAX_COORDINATE;
+  const max = MAX_COORDINATE - 1;
   const x = Math.floor(Math.random() * (max - min + 1)) + min;
   const y = Math.floor(Math.random() * (max - min + 1)) + min;
   return [x, y];
@@ -105,13 +105,19 @@ async function selectAction(
 
 function simulateInteraction(agentState: AgentState, action: Action) {
   if (action._typename === "Move") {
-    if (action.direction === "up") {
+    if (
+      action.direction === "up" &&
+      agentState.position[1] + 1 < MAX_COORDINATE
+    ) {
       agentState.position[1] += 1;
-    } else if (action.direction === "down") {
+    } else if (action.direction === "down" && agentState.position[1] - 1 >= 0) {
       agentState.position[1] -= 1;
-    } else if (action.direction === "left") {
+    } else if (action.direction === "left" && agentState.position[0] - 1 >= 0) {
       agentState.position[0] -= 1;
-    } else if (action.direction === "right") {
+    } else if (
+      action.direction === "right" &&
+      agentState.position[0] + 1 < MAX_COORDINATE
+    ) {
       agentState.position[0] += 1;
     }
   }

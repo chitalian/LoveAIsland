@@ -14,6 +14,15 @@ export interface Tile {
     isHovered: boolean;
 }
 
+export interface Bubble {
+  x:number;
+  y:number;
+  text:string;
+  sourceId:string;
+  destinationId:string;
+}
+
+
 const tileSize = 42
 const tileOffset = 5
 
@@ -61,6 +70,7 @@ const IslandMap: React.FC<BoardProps> = ({ god, subscribe}) => {
     const [selectedTile, setSelectedTile] = useState<Tile | null>(null);
     const [board, setBoard] = useState<Tile[] | null >( null );
     const [objectMap, setObjectMap] = useState<number[][] | null>(null);
+    const [bubbleMap, setBubbleMap] = useState<Bubble[] | null>(null);
     const [loading, setLoading] = useState(false);
     const maskRef = useRef(null);
 
@@ -73,8 +83,6 @@ const IslandMap: React.FC<BoardProps> = ({ god, subscribe}) => {
         const x = agentState.position[0];
         const y = agentState.position[1];
         const data = agentState.profileData;
-
-
       })
     }
     

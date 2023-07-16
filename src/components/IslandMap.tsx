@@ -10,6 +10,16 @@ export interface Tile {
   isHovered: boolean;
 }
 
+const emojiList = [
+  "assets/angel.png",
+  "assets/blink.png",
+  "assets/crazy.png",
+  "assets/hugging.png",
+  "assets/love-eyes.png",
+  "assets/lovely.png",
+  "assts/glasses.png"
+]
+
 const generateBoard = (size: number) => {
   const board: Array<{ x: number; y: number }> = [];
 
@@ -21,6 +31,8 @@ const generateBoard = (size: number) => {
 
   return board;
 };
+
+
 
 const squareToPixel = (x: number, y: number, tileSize: number, tileOffset: number): Point => {
   return new Point(x * (tileSize + tileOffset), y * (tileSize + tileOffset));

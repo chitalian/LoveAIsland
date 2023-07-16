@@ -10,9 +10,6 @@ export interface Tile {
   isHovered: boolean;
 }
 
-const tileSize = 42;
-const tileOffset = 5;
-
 const generateBoard = (size: number) => {
   const board: Array<{ x: number; y: number }> = [];
 
@@ -25,7 +22,7 @@ const generateBoard = (size: number) => {
   return board;
 };
 
-const squareToPixel = (x: number, y: number, tileSize: number): Point => {
+const squareToPixel = (x: number, y: number, tileSize: number, tileOffset: number): Point => {
   return new Point(x * (tileSize + tileOffset), y * (tileSize + tileOffset));
 };
 
@@ -33,10 +30,11 @@ const drawSquare = (
   graphics: any,
   tile: Tile,
   tileSize: number,
+  tileOffset: number,
   isSelected: boolean
 ) => {
   graphics.clear();
-  const squarePos = squareToPixel(tile.x, tile.y, tileSize);
+  const squarePos = squareToPixel(tile.x, tile.y, tileSize, tileOffset);
 
   const strokeWidth = 1;
   const strokeColor = isSelected ? 0x0000ff : 0x808080;
@@ -126,6 +124,9 @@ const IslandMap: React.FC<BoardProps> = ({ god, gameState }) => {
     };
   }, []);
 
+  const tileSize = parentDimensions.height / 11 * 0.9;
+  const tileOffset = parentDimensions.height / 11 * 0.1;
+
   return board && objectMap ? (
     <Stage
       options={{ antialias: true, backgroundColor: 0xfcfaf8 }}
@@ -134,23 +135,23 @@ const IslandMap: React.FC<BoardProps> = ({ god, gameState }) => {
     >
       <Sprite
         image={"assets/love_island.png"}
-        width={512}
-        height={512}
-        x={parentDimensions.width / 2 - 5 * (tileSize + tileOffset)}
-        y={parentDimensions.height / 2 - 5 * (tileSize + tileOffset)}
+        width={parentDimensions.height}
+        height={parentDimensions.height}
+        x={parentDimensions.width / 2 - 5.5 * (tileSize + tileOffset)}
+        y={0}
       />
       <Container
         position={[
-          parentDimensions.width / 2 - 5 * (tileSize + tileOffset),
-          parentDimensions.height / 2 - 5 * (tileSize + tileOffset),
+          parentDimensions.width / 2 - 5.5 * (tileSize + tileOffset),
+          0,
         ]}
       >
         {board.map((tile, index) => {
           const hasObject = objectMap[tile.x][tile.y] === 1;
           const isSelected =
             tile.x === selectedTile?.x && tile.y === selectedTile?.y;
-          const objectPosition = squareToPixel(tile.x, tile.y, tileSize);
-          const objectOffset = { x: tileSize * 0.8, y: tileSize * 0.8 };
+          const objectPosition = squareToPixel(tile.x, tile.y, tileSize, tileOffset);
+          const objectOffset = { x: tileSize * 0.5, y: tileSize * 0.5 };
 
           return (
             <React.Fragment key={index}>
@@ -162,6 +163,7 @@ const IslandMap: React.FC<BoardProps> = ({ god, gameState }) => {
                     graphics,
                     tile,
                     tileSize,
+                    tileOffset,
                     isSelected
                   );
                   graphics.hitArea = rectangle;
@@ -178,7 +180,7 @@ const IslandMap: React.FC<BoardProps> = ({ god, gameState }) => {
                   x={objectPosition.x + objectOffset.x}
                   y={objectPosition.y + objectOffset.y}
                   anchor={new Point(0.5, 0.5)}
-                  scale={new Point(0.2, 0.2)}
+                  scale={new Point(0.25, 0.25)}
                   zIndex={100}
                 />
               )}

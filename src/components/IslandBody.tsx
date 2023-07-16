@@ -58,7 +58,7 @@ function RenderInteractionCard({
 export function IslandBody() {
   const { sendMessage, message } = useWebsocket("ws://localhost:8080");
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row my-3">
       <div className="pt-10 min-h-[600px] bg-gray-100 flex justify-center">
         <div
           id="hexagon-board-parent"
@@ -68,8 +68,7 @@ export function IslandBody() {
         </div>
       </div>
       <div className="text-black flex flex-col">
-        <div>Logs</div>
-        <div className="flex flex-col">
+        <div className="flex flex-col overflow-auto max-h-[60vh]">
           {message &&
             message.interactionHistory.map((interaction, interactionNum) => {
               return (

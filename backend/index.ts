@@ -47,7 +47,7 @@ const MAX_COORDINATE = 16;
 // TODO
 function randomPosition(): Point {
   const min = 0;
-  const max = 0;
+  const max = MAX_COORDINATE;
   const x = Math.floor(Math.random() * (max - min + 1)) + min;
   const y = Math.floor(Math.random() * (max - min + 1)) + min;
   return [x, y];

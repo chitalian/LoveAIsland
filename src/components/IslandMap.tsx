@@ -11,13 +11,13 @@ export interface Tile {
 }
 
 const emojiList = [
-  "assets/angel.png",
-  "assets/blink.png",
-  "assets/crazy.png",
-  "assets/hugging.png",
+  //"assets/angel.png",
+  //"assets/blink.png",
+  //"assets/crazy.png",
+  //"assets/hugging.png",
   "assets/love-eyes.png",
-  "assets/lovely.png",
-  "assts/glasses.png"
+  //"assets/sleepy.png",
+  //"assts/glasses.png"
 ]
 
 const generateBoard = (size: number) => {
@@ -95,7 +95,9 @@ const IslandMap: React.FC<BoardProps> = ({ god, gameState }) => {
     const occupancy = Object.values(gameState.agentStates).map((agentState) => {
       const x = agentState.position[0];
       const y = agentState.position[1];
-      const data = agentState.profileData;
+      //const uuid = agentState.profileData.id;
+      //random index
+      //const index = Math.floor(Math.random() * emojiList.length);
       objectMap[x][y] = 1;
     });
   }
@@ -188,7 +190,7 @@ const IslandMap: React.FC<BoardProps> = ({ god, gameState }) => {
               {hasObject && (
                 <Sprite
                   key={`object-${tile.x}-${tile.y}`}
-                  image="/assets/loot-box-small.png"
+                  image={"assets/love-eyes.png"}
                   x={objectPosition.x + objectOffset.x}
                   y={objectPosition.y + objectOffset.y}
                   anchor={new Point(0.5, 0.5)}

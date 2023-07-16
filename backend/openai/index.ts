@@ -112,5 +112,24 @@ export async function callOpenAI(props: CallOpenAIProps) {
       "Helicone-Auth": "Bearer " + Deno.env.get("HELICONE_API_KEY"),
     },
     body: buildBody(props),
-  }).then((r) => r.json() as Promise<OpenAIResponse>);
+  })
+    .then((r) => r.json())
+    .then((r) => {
+      if (r?.choices?.[0].message?.function_call?.arguments) {
+        return {
+          ...r,
+          choices: r.choices.map((c) => ({
+            ...c,
+            message: {
+              ...c.message,
+              function_call: {
+                ...c.message.function_call,
+                arguments: JSON.parse(c.message.function_call.arguments),
+              },
+            },
+          })),
+        } as Promise<OpenAIResponse>;
+      }
+      return r as Promise<OpenAIResponse>;
+    });
 }

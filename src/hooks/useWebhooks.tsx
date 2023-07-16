@@ -5,11 +5,7 @@ import { useState } from "react";
 import { AgentState, PayloadToClient } from "../../backend/backendTypes";
 
 export const useWebsocket = (url: string | null) => {
-  // const [response, setResponse] = useState({});
-  const [callBacks, setCallBacks] = useState<
-    ((message: PayloadToClient) => void)[]
-  >([
-  ]);
+  const callBacks: ((message: PayloadToClient) => void)[] = [];
 
   const webhook = useQuery({
     queryKey: ["webhook", url],
@@ -47,18 +43,7 @@ export const useWebsocket = (url: string | null) => {
   });
 
   const subscribe = (callBack: (message: PayloadToClient) => void) => {
-    const newCallbacks = [...callBacks, callBack];
-    setCallBacks((callBacks) => [...callBacks, callBack]);
-    if (webhook.data?.socket) {
-      webhook.data.socket.onmessage = (event) => {
-        console.log(`Received message: ${event.data}`);
-        newCallbacks.forEach((callBack) => {
-          callBack(event.data);
-        });
-      };
-    } else {
-      console.error("Websocket not found");
-    }
+    callBacks.push(callBack);
   };
 
   const sendMessage = (message: string) => {

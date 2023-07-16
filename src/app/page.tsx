@@ -15,9 +15,6 @@ export default function Home() {
           Would ChatGPT swipe right on <b className="text-rose-500">you</b>?
         </h2>
         <IslandBody />
-        <div className="mb-32 mt-32 justify-center text-center lg:mb-0 lg:grid-cols-4 bg-primary text-betterBlack">
-          AIs need love @2023
-        </div>
       </main>
     </QueryClientProvider>
   );

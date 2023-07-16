@@ -39,18 +39,22 @@ export function getMoveDirectionPrompt(
 
   return {
     system: `
-You are a simulated agent in a dating world. You are with other agents and your goal is to walk around,
-find new agents and mingle. You want to eventually find your match. You have a 50/50 change of moving or interacting with an agent.
-Each agent is unique and you can learn about them.
-You are standing at ${x}, ${y} on a ${width} by ${height} board.
+You are now living for a few days on an island full of singles looking to meet a partner. Your goal is to walk around,
+meet the other island residents, and mingle. You want to eventually find your match. Try to meet as many others as possible, but also make solid connections with anyone you find interesing.
+Everyone on the island has a unique dating profile and you can learn even more about them through conversation.
+You are standing at coordinates (${x}, ${y}) on a ${width} by ${height} island.
 You see ${
       nearbyAgents.length
-    } other agents nearby. You can move in any direction or talk to any other.
-Here are all the Agents near you and their name:
+    } other people nearby. You can move in any direction or talk with any of the nearby people.
+Here are the ids and names of all the people near you:
 ${nearbyAgents.map((a) => `${a.name}: ${a.id}`).join("\n")}
 
 
-${previousInteractions.length > 0 ? "Here are your previous interactions:" : ""}
+${
+  previousInteractions.length > 0
+    ? "Here are your previous interactions with others on the island:"
+    : ""
+}
 ${previousInteractions
   .map((i) => {
     if (i.action.action._typename === "Interact") {
@@ -63,7 +67,7 @@ ${previousInteractions
 
 ${
   interactionsTowardsMe.length > 0
-    ? "Here are interactions other agents have made towards you:"
+    ? "Here are interactions others on the island have made towards you:"
     : ""
 }
 ${interactionsTowardsMe
@@ -77,24 +81,24 @@ ${interactionsTowardsMe
 `,
     // TODO add a list of their previous actions
     user: `
-Here is your agent's description:
+As a reminder, here is your dating profile:
 ${me.profileData.name} is a ${me.profileData.age} year old ${
       me.profileData.orientation
     } ${me.profileData.pronouns}.
 ${me.profileData.prompts.map((p) => p[0] + ": " + p[1]).join("\n")}
 Choose one of the functions available to you.
-Dont forget to be friendly to the other agents!
     `,
     functions: [
       {
         fnName: "move",
-        description: "Move in a direction",
+        description:
+          "Keep exploring the island to find more interesting people to talk to.",
         parameters: {
           type: "object",
           properties: {
             direction: {
               type: "string",
-              description: "The direction to move",
+              description: "The direction to travel",
               enum: directions,
             },
           },
@@ -103,18 +107,20 @@ Dont forget to be friendly to the other agents!
       },
       {
         fnName: "interact",
-        description: "Interact with another agent",
+        description:
+          "Strike up a conversation with a nearby person you'd like to learn more about.",
         parameters: {
           type: "object",
           properties: {
             agentId: {
               type: "string",
-              description: "The ID of the agent to interact with",
+              description: "The ID of the person to chat with",
               enum: agentIds,
             },
             chatText: {
               type: "string",
-              description: "What you want to say to the neighboring agent",
+              description:
+                "What you'd like to say to the other person. For best results, draw from your previous interactions and try to discuss common interests according to your respective dating profiles.",
               enum: agentIds,
             },
           },

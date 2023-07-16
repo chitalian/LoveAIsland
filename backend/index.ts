@@ -79,12 +79,6 @@ async function selectAction(
   nearbyAgents: AgentProfile[],
   history: Interaction[]
 ): Promise<Action | null> {
-  const min = -1;
-  const max = 1;
-  const randomDx = Math.floor(Math.random() * (max - min + 1)) + min;
-  const randomDy = Math.floor(Math.random() * (max - min + 1)) + min;
-
-  // TODO use LLM to decide
   const prompt = getMoveDirectionPrompt(
     BOARD_DIMENSIONS,
     myAgent.position,

@@ -9,14 +9,8 @@ export default function Home() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-primary">
-        {/* <Counter /> */}
-        <div className="z-10 w-full max-w-5xl items-center justify-center text-center text-xl lg:flex text-betterBlack mb-10">
-          Love Island
-        </div>
-
+      <main className="flex min-h-screen flex-col items-center content-center justify-between p-24 bg-primary">
         <IslandBody />
-
         <div className="mb-32 mt-32 justify-center text-center lg:mb-0 lg:grid-cols-4 bg-primary text-betterBlack">
           AIs need love @2023
         </div>

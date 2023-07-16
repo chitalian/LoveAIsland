@@ -34,6 +34,7 @@ const squareToPixel = (x: number, y: number, tileSize: number): Point => {
 }
 
 const drawSquare = (graphics: any, tile: Tile, tileSize: number, isSelected: boolean) => {
+    graphics.clear();
     const squarePos = squareToPixel(tile.x, tile.y, tileSize);
   
     const strokeWidth = 1;
@@ -73,8 +74,6 @@ const IslandMap: React.FC<BoardProps> = ({ god, subscribe}) => {
         const y = agentState.position[1];
         const data = agentState.profileData;
 
-
-        
 
       })
     }

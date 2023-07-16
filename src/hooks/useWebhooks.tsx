@@ -7,6 +7,7 @@ import { AgentState, PayloadToClient } from "../../backend/backendTypes";
 export const useWebsocket = (url: string | null) => {
   const callBacks: ((message: PayloadToClient) => void)[] = [];
 
+  const [message, setMessage] = useState<PayloadToClient | undefined>(undefined);
   const webhook = useQuery({
     queryKey: ["webhook", url],
     queryFn: async () => {
@@ -22,10 +23,7 @@ export const useWebsocket = (url: string | null) => {
       };
 
       socket.onmessage = (event) => {
-        console.log(`Received message: ${event.data}`);
-        callBacks.forEach((callBack) => {
-          callBack(event.data);
-        });
+        setMessage(JSON.parse(event.data))
       };
 
       socket.onclose = () => {
@@ -52,5 +50,5 @@ export const useWebsocket = (url: string | null) => {
     }
   };
 
-  return { sendMessage, subscribe };
+  return { sendMessage, message };
 };

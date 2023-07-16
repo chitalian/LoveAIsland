@@ -60,42 +60,46 @@ const drawSquare = (graphics: any, tile: Tile, tileSize: number, isSelected: boo
 
 interface BoardProps {
     god: boolean;
-    subscribe: (callBack: (message: PayloadToClient) => void) => void;
+    gameState: PayloadToClient | undefined;
     tiles: any;
     objectMap: number[][]
 }
 
-const IslandMap: React.FC<BoardProps> = ({ god, subscribe}) => {
+const IslandMap: React.FC<BoardProps> = ({ god, gameState }) => {
     const [parentDimensions, setParentDimensions] = useState({ width: 0, height: 0 });
     const [selectedTile, setSelectedTile] = useState<Tile | null>(null);
     const [board, setBoard] = useState<Tile[] | null >( null );
-    const [objectMap, setObjectMap] = useState<number[][] | null>(null);
     const [bubbleMap, setBubbleMap] = useState<Bubble[] | null>(null);
     const [loading, setLoading] = useState(false);
     const maskRef = useRef(null);
 
-    
-    function onUpdate(gameState: PayloadToClient) {
-      console.log("yes!")
-      //gameState.interactionHistory[0].actions
+    let objectMap = [
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ];
 
+    if (gameState && gameState.agentStates) {
       const occupancy = Object.values(gameState.agentStates).map((agentState) => {
         const x = agentState.position[0];
         const y = agentState.position[1];
         const data = agentState.profileData;
+        objectMap[x][y] = 1;
       })
     }
-    
-
-    useEffect(() => {
-      subscribe(onUpdate);
-    }, []);
 
     useEffect (() => {
-      
         if (!board) {
           setLoading(true);
-          // Now generate a 10x10 board
+          // Now generate a 11x11 board
           const board = generateBoard(11);
           // add isSelected and isHover fields to each tile
           const tiles = board.map((tile: any) => {
@@ -106,20 +110,6 @@ const IslandMap: React.FC<BoardProps> = ({ god, subscribe}) => {
           });
 
           setBoard(tiles);
-          setLoading(false);
-          setObjectMap([
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          ])
           setLoading(false);
       }
     }, [])
@@ -146,7 +136,7 @@ const IslandMap: React.FC<BoardProps> = ({ god, subscribe}) => {
     return (
         (board && objectMap) ? 
             <Stage
-                options={{ antialias: true, backgroundColor: 0xfcfaf8 }}
+                options={{ antialias: true, backgroundColor: 0xfcfaf8  }}
                 width={parentDimensions.width}
                 height={parentDimensions.height}
             >
